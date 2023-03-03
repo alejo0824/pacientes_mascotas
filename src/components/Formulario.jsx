@@ -6,7 +6,7 @@ const Formulario = () => {
             <span className="text-sky-700 font-bold">Administralos</span>
         </p>
 
-        <form className="bg-white py-10 px-5 rounded-lg shadow-md">
+        <form className="bg-white py-10 px-5 rounded-lg shadow-md mb-10">
             <div className="mb-5">
                 <label htmlFor="mascota" className="uppercase text-gray-700 font-bold">Nombre de la Mascota</label>
                 <input
