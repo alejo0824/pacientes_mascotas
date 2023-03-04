@@ -1,12 +1,41 @@
+import {useState} from "react";
+import Error from './Error';
+
 const Formulario = () => {
-  return (
+    const [mascota,setMascota] = useState('');
+    const [propietario,setPropietario] = useState('');
+    const [correo,setcorreo] = useState('');
+    const [fecha,setFecha] = useState('');
+    const [sintomas,setSintomas] = useState('');
+    const [error,setError] = useState(false);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+       if([mascota,propietario,correo,fecha,sintomas].includes('')){
+        setError(true);
+        return;
+       }
+       setError(false);
+
+       //Limpiar los campos
+       setMascota('');
+       setPropietario('');
+       setcorreo('');
+       setFecha('');
+       setSintomas('')
+       //
+    }
+
+    return (
     <div className=' md:w-1/2 lg:w-2/5 mx-3'>
         <h2 className="capitalize text-center text-3xl font-black">seguimiento pacientes </h2>
         <p className="text-center mt-5 text-lg mb-10">Añade pacientes y {''}
-            <span className="text-sky-700 font-bold">Administralos</span>
+            <span className="text-sky-600 font-bold">Administralos</span>
         </p>
 
-        <form className="bg-white py-10 px-5 rounded-lg shadow-md mb-10">
+        <form onSubmit={handleSubmit} className="bg-white py-10 px-5 rounded-lg shadow-md mb-10">
+
+            {error && <Error><p>Todos los campos son obligatorios</p></Error>}
             <div className="mb-5">
                 <label htmlFor="mascota" className="uppercase text-gray-700 font-bold">Nombre de la Mascota</label>
                 <input
@@ -14,6 +43,8 @@ const Formulario = () => {
                     type="text" 
                     id="mascota"
                     placeholder="Nombre de la Mascota"
+                    value={mascota}
+                    onChange={(e) => setMascota(e.target.value)}
                 />
             </div>  
 
@@ -24,6 +55,8 @@ const Formulario = () => {
                     type="text" 
                     id="propietario"
                     placeholder="Nombre del propietario"
+                    value={propietario}
+                    onChange={(e) => setPropietario(e.target.value)}
                 />
             </div>
 
@@ -34,6 +67,8 @@ const Formulario = () => {
                     type="email" 
                     id="email"
                     placeholder="Email"
+                    value={correo}
+                    onChange={(e) => setcorreo(e.target.value)}
                 />
             </div>
 
@@ -43,6 +78,8 @@ const Formulario = () => {
                     className="w-full border-2 p-2 mt-2 placeholder-gray-400 rounded-lg"
                     type="date" 
                     id="alta"
+                    value={fecha}
+                    onChange={(e) => setFecha(e.target.value)}
                 />
             </div>
 
@@ -52,17 +89,19 @@ const Formulario = () => {
                     id="sintomas"
                     className="w-full border-2 p-2 mt-2 placeholder-gray-400 rounded-lg"
                     placeholder="Describe los síntomas"
+                    value={sintomas}
+                    onChange={(e) => setSintomas(e.target.value)}
                 />
             </div>
 
             <input
                 type="submit"
-                className=" bg-sky-700 w-full uppercase text-white font-bold p-3 hover:bg-sky-800 cursor-pointer transition-all"
+                className=" bg-sky-600 w-full uppercase text-white font-bold p-3 hover:bg-sky-700 cursor-pointer transition-all"
                 value="Agregar Paciente"
             />
         </form>
     </div>
-  )
+    )
 }
 
 export default Formulario
