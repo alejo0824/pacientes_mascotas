@@ -1,7 +1,7 @@
 import {useState} from "react";
 import Error from './Error';
 
-const Formulario = () => {
+const Formulario = ({pacienteAlmacenado,setPacienteAlmacenado}) => {
     const [mascota,setMascota] = useState('');
     const [propietario,setPropietario] = useState('');
     const [correo,setcorreo] = useState('');
@@ -17,6 +17,17 @@ const Formulario = () => {
        }
        setError(false);
 
+       const objPaciente ={
+        mascota,
+        propietario,
+        correo,
+        fecha,
+        sintomas,
+        id:generarID()
+       }
+
+      setPacienteAlmacenado([...pacienteAlmacenado,objPaciente]);
+
        //Limpiar los campos
        setMascota('');
        setPropietario('');
@@ -24,6 +35,13 @@ const Formulario = () => {
        setFecha('');
        setSintomas('')
        //
+    }
+
+    const generarID = () =>{
+        const random = Math.random().toString(36).slice(2);
+        const fecha = Date.now().toString(36);
+
+        return random + fecha;
     }
 
     return (
