@@ -1,7 +1,7 @@
-import {useState} from "react";
+import {useState,useEffect} from "react";
 import Error from './Error';
 
-const Formulario = ({pacienteAlmacenado,setPacienteAlmacenado}) => {
+const Formulario = ({pacienteAlmacenado,setPacienteAlmacenado,editarPaciente,setEditarPaciente}) => {
     const [mascota,setMascota] = useState('');
     const [propietario,setPropietario] = useState('');
     const [correo,setcorreo] = useState('');
@@ -11,29 +11,37 @@ const Formulario = ({pacienteAlmacenado,setPacienteAlmacenado}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-       if([mascota,propietario,correo,fecha,sintomas].includes('')){
-        setError(true);
-        return;
-       }
-       setError(false);
+        if([mascota,propietario,correo,fecha,sintomas].includes('')){
+            setError(true);
+            return;
+        }
+        setError(false);
 
-       const objPaciente ={
-        mascota,
-        propietario,
-        correo,
-        fecha,
-        sintomas,
-        id:generarID()
-       }
+        const objPaciente ={
+            mascota,
+            propietario,
+            correo,
+            fecha,
+            sintomas,
+        }
 
-      setPacienteAlmacenado([...pacienteAlmacenado,objPaciente]);
-
-       //Limpiar los campos
-       setMascota('');
-       setPropietario('');
-       setcorreo('');
-       setFecha('');
-       setSintomas('')
+        if(editarPaciente.id){
+            objPaciente.id = editarPaciente.id;
+            const pacienteActualizado = pacienteAlmacenado.map(pacienteState => pacienteState.id === editarPaciente.id ? objPaciente : pacienteState);            
+            setPacienteAlmacenado(pacienteActualizado);
+            setEditarPaciente({}); // → Ya está editado, debemos limpiarlo, sino seguira editando            
+        }
+        else {
+            objPaciente.id = generarID();
+            setPacienteAlmacenado([...pacienteAlmacenado,objPaciente]);
+        }
+        
+        //Limpiar los campos
+        setMascota('');
+        setPropietario('');
+        setcorreo('');
+        setFecha('');
+        setSintomas('')
        //
     }
 
@@ -43,6 +51,16 @@ const Formulario = ({pacienteAlmacenado,setPacienteAlmacenado}) => {
 
         return random + fecha;
     }
+
+    useEffect(()=>{
+        if(Object.keys(editarPaciente).length > 0){
+            setMascota(editarPaciente.mascota);
+            setPropietario(editarPaciente.propietario);
+            setcorreo(editarPaciente.correo);
+            setFecha(editarPaciente.fecha);
+            setSintomas(editarPaciente.sintomas);
+        }
+    },[editarPaciente])
 
     return (
     <div className=' md:w-1/2 lg:w-2/5 mx-3'>
@@ -115,7 +133,7 @@ const Formulario = ({pacienteAlmacenado,setPacienteAlmacenado}) => {
             <input
                 type="submit"
                 className=" bg-sky-600 w-full uppercase text-white font-bold p-3 hover:bg-sky-700 cursor-pointer transition-all"
-                value="Agregar Paciente"
+                value={editarPaciente.id ? 'Editar Paciente': 'Agregar Paciente'}
             />
         </form>
     </div>
