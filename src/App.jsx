@@ -23,7 +23,7 @@ const  eliminarPaciente = (id) => {
 }
 
   return (
-    <div className='container'>
+    <div className='container mx-auto'>
       <Header/>
       <div className='mt-12 md:flex'>
         <Formulario
